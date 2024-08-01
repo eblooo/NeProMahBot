@@ -19,7 +19,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy source code
 COPY src/ src/
-COPY about.md .
 
 # Final stage
 FROM python:3.9-slim-buster
