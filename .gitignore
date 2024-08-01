@@ -11,4 +11,4 @@ venv.bak/
 .vscode/
 
 # notes
-*.txt
+notes/
