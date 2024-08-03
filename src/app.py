@@ -14,7 +14,7 @@ import logging
 import os
 
 
-from telegram import Update, ForceReply
+from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters, Updater
 
 import openai
@@ -56,9 +56,15 @@ async def process_msg(update: Update, context: ContextTypes.DEFAULT_TYPE, gpt_cl
     
     if run.status == "completed":
         messages = gpt_client.beta.threads.messages.list(thread_id=thread.id)
-        await update.message.reply_text(messages.data[0].content[0].text.value)
+        gpt_responce = messages.data[0].content[0].text.value
     else:
-        await update.message.reply_text("I'm sorry, I couldn't understand your message.")
+        gpt_responce = "I'm sorry, I couldn't understand your message."
+
+    await update.message.reply_text(gpt_responce)
+    
+    # send log to admin
+    admin_log_responce = f"User {update._effective_user.full_name} ID {update._effective_user.id} said: {user_tg_msg_text}\nGPT respond: {gpt_responce}"
+    await context.bot.send_message(chat_id="242426387", text=admin_log_responce)
             
 
 
